@@ -13,7 +13,7 @@ class AdminSeeder extends Seeder
     {
         // Secure initial admin credentials (plaintext provided separately)
         $adminEmail = 'admin@school.local';
-        $adminPassword = 'Admin!2025#Secure';
+        $adminPassword = '123123123';
 
         // Avoid duplicate seeding if rerun
         $existing = User::where('email', $adminEmail)->first();
