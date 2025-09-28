@@ -160,7 +160,6 @@ The School Management System is a modern, web-based application designed to stre
 
 ### 🎨 User Interface
 - **Responsive Design** - Mobile-first approach with Tailwind CSS
-- **Dark/Light Theme** - User preference-based theme switching
 - **Modern UI Components** - Clean, intuitive interface design
 - **Interactive Dashboards** - Real-time data visualization with Chart.js
 - **Alpine.js Integration** - Dynamic frontend interactions
