@@ -7,7 +7,7 @@
 
 **A comprehensive school management system built with Laravel 12, featuring multi-role authentication, student enrollment, teacher management, file handling, and advanced analytics dashboard.**
 
-[Features](#-features) • [Installation](#-quickstart) • [Usage](#-usage) • [Screenshots](#-screenshots)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Screenshots](#-screenshots)
 
 </div>
 
