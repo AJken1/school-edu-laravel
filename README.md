@@ -9,43 +9,86 @@
 
 **A comprehensive school management system built with Laravel 12, featuring multi-role authentication, student enrollment, teacher management, file handling, and advanced analytics dashboard.**
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Screenshots](#-screenshots) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Screenshots](#-screenshots)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 📸 Screenshots
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Technology Stack](#-technology-stack)
-- [Screenshots](#-screenshots)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Usage](#-usage)
-- [API Documentation](#-api-documentation)
-- [Database Schema](#-database-schema)
-- [File Structure](#-file-structure)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
+### 🏠 Main Pages
 
----
+#### Homepage
+![Main Page](public/images/Mainpage.png)
 
-## 🎯 Overview
+#### Login Page
+![Login Page](public/images/LoginPage.png)
 
-The School Management System is a modern, web-based application designed to streamline educational institution operations. Built with Laravel 12, it provides a comprehensive solution for managing students, teachers, subjects, and administrative tasks with role-based access control and advanced analytics.
+#### Enrollment Page
+![Enrollment Page](public/images/EnrollmentPage.png)
 
-### Key Highlights
+#### Check Status Page
+![Check Status Page](public/images/CheckstatusPage.png)
 
-- **Multi-Role Authentication System** - Admin, Teacher, Student, Owner, and Staff roles
-- **Public Student Enrollment** - Online enrollment system with file upload capabilities
-- **Advanced Analytics Dashboard** - Real-time statistics and data visualization
-- **File Management System** - Secure document handling for students and teachers
-- **Responsive Design** - Modern UI with Tailwind CSS and Alpine.js
-- **RESTful API** - Complete API endpoints for mobile app integration
+### 👨‍💼 Admin Dashboard
+
+#### Admin Dashboard
+![Admin Dashboard](public/images/adminDashboard.png)
+
+#### Student Management
+![Student List](public/images/StudentList.png)
+![Student Profile](public/images/StudentProfile.png)
+![Student Edit](public/images/StudentEdit.png)
+![Student Status](public/images/StudentStatus.png)
+
+#### Teacher Management
+![Teacher Profile](public/images/TeacherProfile.png)
+![Teacher Edit](public/images/TeacherEdit.png)
+
+#### Subject Management
+![Subject List](public/images/SubjectList.png)
+![Subject Create](public/images/SubjectCreate.png)
+
+#### File Management
+![Student File List](public/images/StudentFileList.png)
+![View File](public/images/ViewFile.png)
+![View File Alert](public/images/ViewFileAlert.png)
+
+### 👨‍🏫 Teacher Dashboard
+
+#### Teacher Dashboard
+![Teacher Dashboard](public/images/TeacherDashboard.png)
+
+#### Teacher Student Management
+![Teacher Student List](public/images/TeacherStudentList.png)
+
+#### Teacher Subject Management
+![Teacher Subject List](public/images/TeacherSubjectList.png)
+
+### 👨‍🎓 Student Dashboard
+
+#### Student Dashboard
+![Student Dashboard](public/images/StudetDashboard.png)
+
+#### Student File Management
+![Student View File](public/images/StudentViewFile.png)
+
+### 🎨 Theme Support
+
+#### Light Mode
+![Light Mode](public/images/whitemode.png)
+
+#### Dark Mode
+![Dark Mode](public/images/darkie.png)
+
+### 🔐 Authentication & Security
+
+#### Forgot Password
+![Forgot Password](public/images/FogotPassword.png)
+
+#### User Management
+![Remove User](public/images/remove.png)
 
 ---
 
@@ -150,143 +193,42 @@ The School Management System is a modern, web-based application designed to stre
 
 ---
 
-## 📸 Screenshots
-
-### Light Mode Dashboard
-![Light Mode Dashboard](whitemode.png)
-
-### Dark Mode Dashboard
-![Dark Mode Dashboard](darkmode.png)
-
----
-
-## 🚀 Installation
+## 🚀 Quick Start
 
 ### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- Git
 
-Before installing the School Management System, ensure you have the following installed:
-
-- **PHP 8.2 or higher**
-- **Composer** (latest version)
-- **Node.js 18+ and NPM**
-- **Web server** (Apache/Nginx) or **Laravel Valet/Sail**
-- **Git** (for version control)
-
-### Step 1: Clone the Repository
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/school-edu-laravel.git
-
-# Navigate to the project directory
+git clone https://github.com/AJken1/school-edu-laravel.git
 cd school-edu-laravel
-```
 
-### Step 2: Install Dependencies
-
-```bash
-# Install PHP dependencies
+# Install dependencies
 composer install
-
-# Install Node.js dependencies
 npm install
-```
 
-### Step 3: Environment Configuration
-
-```bash
-# Copy environment file
+# Environment setup
 cp .env.example .env
-
-# Generate application key
 php artisan key:generate
-```
 
-### Step 4: Database Setup
-
-```bash
-# Create SQLite database (default)
+# Database setup
 touch database/database.sqlite
-
-# Or configure MySQL/PostgreSQL in .env file
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
-# DB_DATABASE=edu_db
-# DB_USERNAME=root
-# DB_PASSWORD=
-
-# Run migrations
 php artisan migrate
-
-# Seed the database with sample data
 php artisan db:seed
-```
 
-### Step 5: Storage Setup
-
-```bash
-# Create storage link
-php artisan storage:link
-
-# Set proper permissions (Linux/Mac)
-chmod -R 775 storage bootstrap/cache
-```
-
-### Step 6: Build Assets
-
-```bash
-# Build frontend assets
+# Build assets
 npm run build
 
-# Or for development
-npm run dev
-```
-
-### Step 7: Start the Application
-
-```bash
-# Start Laravel development server
+# Start server
 php artisan serve
-
-# The application will be available at http://localhost:8000
-```
-
----
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Key environment variables to configure in your `.env` file:
-
-```env
-# Application
-APP_NAME="School Management System"
-APP_ENV=production
-APP_KEY=base64:your-generated-key
-APP_DEBUG=false
-APP_URL=http://localhost:8000
-
-# Database
-DB_CONNECTION=sqlite
-DB_DATABASE=/path/to/database/database.sqlite
-
-# Mail Configuration
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_ENCRYPTION=tls
-
-# File Storage
-FILESYSTEM_DISK=local
 ```
 
 ### Default Login Credentials
-
-After running the seeders, you can use these default accounts:
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -294,8 +236,6 @@ After running the seeders, you can use these default accounts:
 | Teacher | teacher@gmail.com | 123 |
 | Student | student@gmail.com | 123 |
 | Owner | owner@gmail.com | 123 |
-
-**⚠️ Important:** Change these default passwords in production!
 
 ---
 
