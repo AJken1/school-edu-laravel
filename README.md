@@ -246,7 +246,7 @@ php artisan serve
 
 2. **Login to Admin Panel**
    - Click "Login" in the navigation
-   - Use admin credentials: `admin@gmail.com` / `123`
+   - Use admin credentials: `admin@school.local` / `123123123`
    - You'll be redirected to the admin dashboard
 
 3. **Explore the Dashboard**
