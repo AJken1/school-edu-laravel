@@ -13,6 +13,19 @@
 
 </div>
 
+## 🎯 Overview
+
+The School Management System is a modern, web-based application designed to streamline educational institution operations. Built with Laravel 12, it provides a comprehensive solution for managing students, teachers, subjects, and administrative tasks with role-based access control and advanced analytics.
+
+### Key Highlights
+
+- **Multi-Role Authentication System** - Admin, Teacher, Student, Owner, and Staff roles
+- **Public Student Enrollment** - Online enrollment system with file upload capabilities
+- **Advanced Analytics Dashboard** - Real-time statistics and data visualization
+- **File Management System** - Secure document handling for students and teachers
+- **Responsive Design** - Modern UI with Tailwind CSS and Alpine.js
+- **RESTful API** - Complete API endpoints for mobile app integration
+
 ---
 
 ## 📸 Screenshots
@@ -74,21 +87,10 @@
 #### Student File Management
 ![Student View File](public/images/StudentViewFile.png)
 
-### 🎨 Theme Support
-
-#### Light Mode
-![Light Mode](public/images/whitemode.png)
-
-#### Dark Mode
-![Dark Mode](public/images/darkie.png)
-
 ### 🔐 Authentication & Security
 
 #### Forgot Password
 ![Forgot Password](public/images/FogotPassword.png)
-
-#### User Management
-![Remove User](public/images/remove.png)
 
 ---
 
@@ -232,10 +234,7 @@ php artisan serve
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@gmail.com | 123 |
-| Teacher | teacher@gmail.com | 123 |
-| Student | student@gmail.com | 123 |
-| Owner | owner@gmail.com | 123 |
+| Admin | admin@school.local | 123123123 |
 
 ---
 
