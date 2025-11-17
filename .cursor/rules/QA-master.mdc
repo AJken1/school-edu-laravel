@@ -1,0 +1,115 @@
+# QA Testing Rules and Checklist for Websites
+
+## 1. Functional Testing
+
+**Goal:** Verify every feature works as expected.
+
+**Rules:**
+
+* Test all buttons, links, and navigation (no broken links, correct redirects).
+* Check all forms (validation, error messages, success messages).
+* Test CRUD operations (Create, Read, Update, Delete) if applicable.
+* Confirm dynamic content (AJAX requests, API calls) loads properly.
+* Verify uploads and downloads (file size limits, formats).
+* Test across different browsers (Chrome, Firefox, Edge, Safari).
+* Test across different devices and screen sizes.
+
+---
+
+## 2. UI/UX Testing
+
+**Goal:** Ensure design, layout, and interaction are consistent and intuitive.
+
+**Rules:**
+
+* Check alignment, spacing, colors, and typography match design specs.
+* Verify responsive design on desktop, tablet, and mobile.
+* Test hover states, animations, and transitions.
+* Validate overall user flow (registration, login, dashboard, logout, etc.).
+* Confirm readability and accessibility (contrast ratio, ARIA labels, alt text).
+
+---
+
+## 3. Security Testing
+
+**Goal:** Identify vulnerabilities that could expose data or compromise system integrity.
+
+**Rules:**
+
+* Test for SQL Injection using malicious input.
+* Test for Cross-Site Scripting (XSS) by injecting scripts in input fields.
+* Verify authentication and session management (token expiration, logout).
+* Ensure passwords are stored securely (hashed and salted).
+* Test access control (prevent unauthorized access to restricted areas).
+* Confirm HTTPS enforcement and secure cookie settings (Secure, HttpOnly).
+* Check for proper use of security headers (CSP, X-Frame-Options, X-Content-Type-Options).
+* Use automated vulnerability scanners such as OWASP ZAP or Burp Suite.
+
+---
+
+## 4. Performance Testing
+
+**Goal:** Ensure the website loads quickly and performs well under load.
+
+**Rules:**
+
+* Measure page load times (aim for under 3 seconds).
+* Test with tools like Google Lighthouse or PageSpeed Insights.
+* Perform load and stress testing using JMeter or k6.
+* Check API response times.
+* Monitor memory usage, CPU load, and backend resource utilization.
+
+---
+
+## 5. Database and API Testing
+
+**Goal:** Ensure backend logic and data integrity are correct.
+
+**Rules:**
+
+* Test all API endpoints for correct responses and status codes.
+* Validate database constraints (unique keys, foreign keys).
+* Check data persistence after operations (insert, update, delete).
+* Test rate limits and throttling on APIs.
+* Ensure proper error handling and logging are implemented.
+
+---
+
+## 6. Regression and Automation Testing
+
+**Goal:** Ensure that new changes do not break existing features.
+
+**Rules:**
+
+* Maintain automated test scripts using tools like Playwright, Cypress, or Selenium.
+* Run regression tests before each deployment.
+* Integrate automated tests into the CI/CD pipeline (GitHub Actions, Jenkins).
+* Track bugs and fixes using an issue tracker (Jira, Trello, Linear).
+
+---
+
+## 7. User Acceptance Testing (UAT)
+
+**Goal:** Validate the system from the end user’s perspective.
+
+**Rules:**
+
+* Prepare real-world test cases and expected outcomes.
+* Involve stakeholders or actual users for testing.
+* Verify that business logic meets requirements.
+* Record usability issues and user feedback for improvement.
+
+---
+
+## 8. Documentation and Reporting
+
+**Goal:** Maintain a clear record of test coverage and issues.
+
+**Rules:**
+
+* Document all test cases, test data, and expected results.
+* Record defects with detailed reproduction steps and screenshots.
+* Prioritize issues by severity and impact.
+* Summarize testing outcomes in a structured QA report.
+
+

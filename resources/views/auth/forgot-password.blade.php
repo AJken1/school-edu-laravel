@@ -13,7 +13,7 @@
                     <h1 class="text-2xl font-bold text-blue-600">EDUgate</h1>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900">Forgot Password?</h2>
-                <p class="mt-2 text-gray-600">No problem! Enter your email address and we'll send you a reset code.</p>
+                <p class="mt-2 text-gray-600">No problem! Enter your email address and we'll send you a secure reset link.</p>
             </div>
 
             <!-- Success Message -->
@@ -72,7 +72,7 @@
 
                 <button type="submit" 
                         class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition duration-300 transform hover:scale-105">
-                    Send Reset Code
+                    Send Reset Link
                 </button>
             </form>
 
@@ -91,8 +91,8 @@
                 <h3 class="text-sm font-semibold text-blue-800 mb-2">How it works:</h3>
                 <ul class="text-blue-700 text-xs space-y-1">
                     <li>• Enter your registered email address</li>
-                    <li>• We'll send you a 6-digit reset code</li>
-                    <li>• Use the code to create a new password</li>
+                    <li>• We'll send you a secure password reset link</li>
+                    <li>• Use the link to create a new password</li>
                     <li>• If you don't receive the email, check your spam folder</li>
                 </ul>
             </div>

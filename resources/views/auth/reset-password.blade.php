@@ -51,7 +51,7 @@
                         <input type="email" 
                                id="email" 
                                name="email" 
-                               value="{{ old('email', request()->email) }}"
+                               value="{{ old('email', $email) }}"
                                required 
                                autofocus
                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"

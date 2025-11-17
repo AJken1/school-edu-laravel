@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -46,7 +47,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid email or password!'
-            ]);
+            ], 401);
         }
 
         return back()->withErrors([
@@ -79,71 +80,77 @@ class AuthController extends Controller
         return view('auth.forgot-password');
     }
 
-    public function showResetPasswordForm($token)
+    public function showResetPasswordForm(Request $request, $token)
     {
-        return view('auth.reset-password', ['token' => $token]);
-    }
-
-    public function sendResetCode(Request $request)
-    {
-        $request->validate(['email' => 'required|email|exists:users']);
-
-        $otp = rand(100000, 999999);
-        session(['otp' => $otp, 'reset_email' => $request->email]);
-
-        // Send OTP via email (you'll need to configure mail settings)
-        try {
-            Mail::raw("Your password reset code is: {$otp}", function ($message) use ($request) {
-                $message->to($request->email)->subject('Password Reset Code');
-            });
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Reset code sent to your email'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'success',
-                'message' => "Reset code: {$otp}" // For testing purposes
-            ]);
-        }
-    }
-
-    public function verifyResetCode(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|numeric'
-        ]);
-
-        if (session('otp') == $request->otp && session('reset_email') == $request->email) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'OTP verified successfully'
-            ]);
-        }
-
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Invalid OTP!'
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->query('email')
         ]);
     }
 
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required|min:3|confirmed'
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => ['required', 'confirmed', PasswordRule::defaults()],
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        $user->update(['password' => Hash::make($request->password)]);
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+            }
+        );
 
-        session()->forget(['otp', 'reset_email']);
+        if ($status === Password::PASSWORD_RESET) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Password has been reset successfully.'
+                ]);
+            }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Password updated successfully'
+            return redirect()->route('login')->with('status', __($status));
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => __($status)
+            ], 422);
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [__($status)]
         ]);
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return $request->expectsJson()
+                ? response()->json([
+                    'status' => 'success',
+                    'message' => __('passwords.sent')
+                ])
+                : back()->with('status', __($status));
+        }
+
+        // Always return a generic message to prevent user enumeration
+        return $request->expectsJson()
+            ? response()->json([
+                'status' => 'success',
+                'message' => __('passwords.sent')
+            ])
+            : back()->with('status', __('passwords.sent'));
     }
 }

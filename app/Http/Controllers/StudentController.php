@@ -42,6 +42,37 @@ class StudentController extends Controller
         $students = $query->orderBy('created_at', 'desc')->paginate(15);
 
         if ($request->expectsJson()) {
+            if ($request->routeIs('student.*')) {
+                $authStudent = $request->user()?->student;
+                if (!$authStudent) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Student record not found.'
+                    ], 404);
+                }
+
+                $authStudent->load('user');
+
+                return response()->json([
+                    'success' => true,
+                    'students' => [$authStudent],
+                    'stats' => [
+                        'total' => 1,
+                        'active' => $authStudent->status === 'Active' ? 1 : 0,
+                        'enrolled' => $authStudent->status === 'enrolled' ? 1 : 0,
+                        'pending' => in_array($authStudent->status, ['pending', 'missing_docs'], true) ? 1 : 0,
+                        'graduated' => $authStudent->status === 'graduated' ? 1 : 0,
+                    ],
+                    'pagination' => [
+                        'total' => 1,
+                        'from' => 1,
+                        'to' => 1,
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ],
+                ]);
+            }
+
             // Compute stats on the full filtered dataset (not just current page)
             $statsQuery = clone $query;
             $stats = [
