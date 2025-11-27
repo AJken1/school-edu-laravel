@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Student Enrollment - School Management System')
+@section('title', 'Student Enrollment - EDUgate')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-12">

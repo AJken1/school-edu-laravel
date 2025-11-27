@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Home - School Management System')
+@section('title', 'Home - EDUgate')
 
 @section('content')
 <div class="hero-section bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
