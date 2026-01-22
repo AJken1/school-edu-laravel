@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Subjects</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Total Subjects</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $subjects->total() }}</div>
                         </div>
                         <div class="col-auto">
@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Classes</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Classes</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $subjects->pluck('class')->unique()->filter()->count() }}</div>
                         </div>
                         <div class="col-auto">

@@ -3,85 +3,61 @@
 @section('title', 'My Subjects - EDUgate Teacher')
 
 @section('content')
-<div class="container">
+<div class="container-fluid px-4 attio-dashboard">
     <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="page-header mb-5">
         <div>
-            <h1 class="h3 mb-0 text-gray-800">
-                <i class="fas fa-book me-2"></i>My Subjects
-            </h1>
-            <p class="text-muted mb-0">Manage subjects and upload teaching materials</p>
+            <h1 class="page-title">My Subjects</h1>
+            <p class="page-subtitle">Manage subjects and upload teaching materials</p>
         </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-success" onclick="openAddSubjectModal()">
-                <i class="fas fa-plus me-2"></i>Add Subject
+        <div class="d-flex gap-2 flex-wrap">
+            <button class="action-btn-primary" onclick="openAddSubjectModal()">
+                <i class="fas fa-plus"></i>
+                <span>Add Subject</span>
             </button>
-            <button class="btn btn-primary" onclick="refreshSubjects()">
-                <i class="fas fa-sync me-2"></i>Refresh
+            <button class="action-btn-primary" onclick="refreshSubjects()">
+                <i class="fas fa-sync"></i>
+                <span>Refresh</span>
             </button>
         </div>
     </div>
 
     <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalSubjects">0</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+    <div class="stats-grid mb-5">
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">Total Subjects</div>
+                <div class="stat-value" id="totalSubjects">0</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-book"></i>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="activeSubjects">0</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">Active Subjects</div>
+                <div class="stat-value" id="activeSubjects">0</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">With Materials</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="subjectsWithFiles">0</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">With Materials</div>
+                <div class="stat-value" id="subjectsWithFiles">0</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-file-alt"></i>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Files</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalFiles">0</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-folder fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">Total Files</div>
+                <div class="stat-value" id="totalFiles">0</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-folder"></i>
             </div>
         </div>
     </div>
@@ -90,10 +66,10 @@
     <div class="row" id="subjectsGrid">
         <div class="col-12">
             <div class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
+                <div class="spinner-border text-dark" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="mt-2 text-muted">Loading subjects...</p>
+                <p class="mt-2" style="color: #666;">Loading subjects...</p>
             </div>
         </div>
     </div>
@@ -102,54 +78,55 @@
 <!-- Add Subject Modal -->
 <div class="modal fade" id="addSubjectModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-plus me-2"></i>Add New Subject
-                </h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
+        <div class="modal-content attio-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Subject</h5>
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="addSubjectForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="subjectName" class="form-label">Subject Name *</label>
-                            <input type="text" class="form-control" id="subjectName" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="subjectCode" class="form-label">Subject Code *</label>
-                            <input type="text" class="form-control" id="subjectCode" required>
+                        <label for="subjectName" class="form-label attio-label">Subject Name *</label>
+                        <input type="text" class="form-control attio-input" id="subjectName" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="subjectCode" class="form-label attio-label">Subject Code *</label>
+                        <input type="text" class="form-control attio-input" id="subjectCode" required>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="subjectGrade" class="form-label">Grade Level</label>
-                            <select class="form-select" id="subjectGrade">
-                                <option value="">All Grades</option>
-                                <option value="7">Grade 7</option>
-                                <option value="8">Grade 8</option>
-                                <option value="9">Grade 9</option>
-                                <option value="10">Grade 10</option>
-                                <option value="11">Grade 11</option>
-                                <option value="12">Grade 12</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="subjectCredits" class="form-label">Credits</label>
-                            <input type="number" class="form-control" id="subjectCredits" min="1" max="10">
-                        </div>
+                        <label for="subjectGrade" class="form-label attio-label">Grade Level</label>
+                        <select class="form-select attio-input" id="subjectGrade">
+                            <option value="">All Grades</option>
+                            <option value="7">Grade 7</option>
+                            <option value="8">Grade 8</option>
+                            <option value="9">Grade 9</option>
+                            <option value="10">Grade 10</option>
+                            <option value="11">Grade 11</option>
+                            <option value="12">Grade 12</option>
+                        </select>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="subjectDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="subjectDescription" rows="3"></textarea>
+                    <div class="col-md-6 mb-3">
+                        <label for="subjectCredits" class="form-label attio-label">Credits</label>
+                        <input type="number" class="form-control attio-input" id="subjectCredits" min="1" max="10">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subjectDescription" class="form-label attio-label">Description</label>
+                    <textarea class="form-control attio-input" id="subjectDescription" rows="3"></textarea>
                     </div>
                     
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Create Subject
+                        <button type="button" class="action-btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="action-btn-primary">
+                            <i class="fas fa-save"></i>
+                            <span>Create Subject</span>
                         </button>
                     </div>
                 </form>
@@ -161,12 +138,12 @@
 <!-- Edit Subject Modal -->
 <div class="modal fade" id="editSubjectModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-edit me-2"></i>Edit Subject
-                </h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
+        <div class="modal-content attio-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Subject</h5>
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="editSubjectModalBody">
                 <!-- Edit form will be loaded here -->
@@ -178,12 +155,12 @@
 <!-- Upload Files Modal -->
 <div class="modal fade" id="uploadFilesModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-upload me-2"></i>Upload Teaching Materials
-                </h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
+        <div class="modal-content attio-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Teaching Materials</h5>
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="uploadFilesModalBody">
                 <!-- Upload form will be loaded here -->
@@ -195,12 +172,12 @@
 <!-- Subject Files Modal -->
 <div class="modal fade" id="subjectFilesModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-file-alt me-2"></i>Subject Materials
-                </h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
+        <div class="modal-content attio-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Subject Materials</h5>
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="subjectFilesModalBody">
                 <!-- Files list will be loaded here -->
@@ -212,31 +189,162 @@
 
 @push('styles')
 <style>
-/* Subject card styling */
-.subject-card {
-    transition: all 0.3s ease;
-    border: none;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.attio-dashboard {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2.5rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    font-size: 0.9375rem;
+    color: #666;
+    margin: 0.5rem 0 0;
+    font-weight: 400;
+}
+
+.action-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.125rem;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    color: #1a1a1a;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.action-btn-primary:hover {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+    color: #1a1a1a;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.action-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    background: transparent;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    color: #1a1a1a;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.action-btn-secondary:hover {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 8px;
+    color: #666;
+    font-size: 1.25rem;
+}
+
+.subject-card {
+    transition: all 0.2s ease;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: #ffffff;
 }
 
 .subject-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #d0d0d0;
 }
 
 .subject-card .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #fafafa;
+    color: #1a1a1a;
     border-radius: 12px 12px 0 0 !important;
-    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.25rem 1.5rem;
 }
 
 .subject-card .card-body {
     padding: 1.5rem;
 }
 
-/* Subject stats */
 .subject-stats {
     display: flex;
     justify-content: space-between;
@@ -250,18 +358,19 @@
 
 .stat-number {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #667eea;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
 }
 
 .stat-label {
     font-size: 0.75rem;
-    color: #6c757d;
+    color: #666;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-top: 0.25rem;
 }
 
-/* Action buttons */
 .action-buttons {
     display: flex;
     gap: 0.5rem;
@@ -274,27 +383,27 @@
     padding: 0.5rem 0.75rem;
 }
 
-/* File list styling */
 .file-item {
     display: flex;
     align-items: center;
     padding: 0.75rem;
-    border: 1px solid #e9ecef;
+    border: 1px solid #e5e5e5;
     border-radius: 8px;
     margin-bottom: 0.5rem;
     transition: all 0.2s ease;
+    background: #ffffff;
 }
 
 .file-item:hover {
-    background-color: #f8f9fa;
-    border-color: #667eea;
+    background-color: #fafafa;
+    border-color: #d0d0d0;
 }
 
 .file-icon {
     width: 40px;
     height: 40px;
-    background-color: #667eea;
-    color: white;
+    background-color: #f5f5f5;
+    color: #1a1a1a;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -307,54 +416,129 @@
 }
 
 .file-name {
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 0.25rem;
+    color: #1a1a1a;
+    font-size: 0.875rem;
 }
 
 .file-meta {
-    font-size: 0.875rem;
-    color: #6c757d;
+    font-size: 0.8125rem;
+    color: #666;
 }
 
-/* Border colors for stats cards */
-.border-left-primary {
-    border-left: 4px solid #667eea !important;
-}
-
-.border-left-success {
-    border-left: 4px solid #38ef7d !important;
-}
-
-.border-left-warning {
-    border-left: 4px solid #f093fb !important;
-}
-
-.border-left-info {
-    border-left: 4px solid #36b9cc !important;
-}
-
-/* Upload area */
 .upload-area {
-    border: 2px dashed #dee2e6;
+    border: 2px dashed #e5e5e5;
     border-radius: 8px;
     padding: 2rem;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
+    background: #fafafa;
 }
 
 .upload-area:hover {
-    border-color: #667eea;
-    background-color: #f8f9fa;
+    border-color: #1a1a1a;
+    background-color: #f5f5f5;
 }
 
 .upload-area.dragover {
-    border-color: #667eea;
-    background-color: #e3f2fd;
+    border-color: #1a1a1a;
+    background-color: #f0f0f0;
 }
 
-/* Responsive adjustments */
+.attio-modal .modal-content {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.attio-modal .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    background: #ffffff;
+}
+
+.attio-modal .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.125rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f5f5;
+    color: #1a1a1a;
+}
+
+.attio-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.attio-label {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.attio-input {
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.attio-input:focus {
+    outline: none;
+    border-color: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    display: inline-block;
+    background: #f0f0f0;
+    color: #1a1a1a;
+}
+
 @media (max-width: 768px) {
+    .attio-dashboard {
+        padding: 1rem 0;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
     .action-buttons {
         flex-direction: column;
     }
@@ -362,12 +546,6 @@
     .subject-stats {
         flex-direction: column;
         gap: 1rem;
-    }
-    
-    .stat-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 }
 </style>
@@ -430,13 +608,14 @@ function renderSubjects() {
     if (subjects.length === 0) {
         grid.innerHTML = `
             <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-body text-center py-5">
-                        <i class="fas fa-book fa-3x text-muted mb-3"></i>
-                        <h5 class="text-muted">No subjects found</h5>
-                        <p class="text-muted">Start by adding your first subject.</p>
-                        <button class="btn btn-primary" onclick="openAddSubjectModal()">
-                            <i class="fas fa-plus me-2"></i>Add Subject
+                <div class="section-card">
+                    <div class="section-body text-center py-5">
+                        <i class="fas fa-book fa-3x" style="color: #666; opacity: 0.3; margin-bottom: 1rem;"></i>
+                        <h5 style="color: #1a1a1a; font-weight: 500; margin-bottom: 0.5rem;">No subjects found</h5>
+                        <p style="color: #666; margin-bottom: 1.5rem;">Start by adding your first subject.</p>
+                        <button class="action-btn-primary" onclick="openAddSubjectModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Subject</span>
                         </button>
                     </div>
                 </div>
@@ -447,12 +626,12 @@ function renderSubjects() {
     
     grid.innerHTML = subjects.map(subject => `
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card subject-card h-100">
+            <div class="subject-card h-100">
                 <div class="card-header">
-                    <h6 class="mb-0">
-                        <i class="fas fa-book me-2"></i>${subject.name}
+                    <h6 style="font-size: 1rem; font-weight: 500; color: #1a1a1a; margin: 0 0 0.25rem;">
+                        <i class="fas fa-book" style="margin-right: 0.5rem; opacity: 0.7;"></i>${subject.name}
                     </h6>
-                    <small class="opacity-75">${subject.code}</small>
+                    <small style="color: #666; font-size: 0.8125rem;">${subject.code}</small>
                 </div>
                 <div class="card-body">
                     <div class="subject-stats">
@@ -470,22 +649,22 @@ function renderSubjects() {
                         </div>
                     </div>
                     
-                    <p class="text-muted mb-2">${subject.description}</p>
+                    <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">${subject.description || 'No description'}</p>
                     
-                    <div class="mb-2">
-                        <span class="badge bg-info">Grade ${subject.grade_level}</span>
-                        <span class="badge bg-success">${subject.status}</span>
+                    <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span class="status-badge">Grade ${subject.grade_level || 'All'}</span>
+                        <span class="status-badge">${subject.status}</span>
                     </div>
                     
                     <div class="action-buttons">
-                        <button class="btn btn-outline-primary btn-sm" onclick="viewSubjectFiles(${subject.id})">
-                            <i class="fas fa-file-alt me-1"></i>Files
+                        <button class="action-btn-secondary" style="font-size: 0.8125rem;" onclick="viewSubjectFiles(${subject.id})">
+                            <i class="fas fa-file-alt"></i><span>Files</span>
                         </button>
-                        <button class="btn btn-outline-success btn-sm" onclick="uploadSubjectFiles(${subject.id})">
-                            <i class="fas fa-upload me-1"></i>Upload
+                        <button class="action-btn-secondary" style="font-size: 0.8125rem;" onclick="uploadSubjectFiles(${subject.id})">
+                            <i class="fas fa-upload"></i><span>Upload</span>
                         </button>
-                        <button class="btn btn-outline-warning btn-sm" onclick="editSubject(${subject.id})">
-                            <i class="fas fa-edit me-1"></i>Edit
+                        <button class="action-btn-secondary" style="font-size: 0.8125rem;" onclick="editSubject(${subject.id})">
+                            <i class="fas fa-edit"></i><span>Edit</span>
                         </button>
                     </div>
                 </div>
@@ -541,19 +720,19 @@ function editSubject(subjectId) {
         <form id="editSubjectForm">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="editSubjectName" class="form-label">Subject Name *</label>
-                    <input type="text" class="form-control" id="editSubjectName" value="${subject.name}" required>
+                    <label for="editSubjectName" class="form-label attio-label">Subject Name *</label>
+                    <input type="text" class="form-control attio-input" id="editSubjectName" value="${subject.name}" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="editSubjectCode" class="form-label">Subject Code *</label>
-                    <input type="text" class="form-control" id="editSubjectCode" value="${subject.code}" required>
+                    <label for="editSubjectCode" class="form-label attio-label">Subject Code *</label>
+                    <input type="text" class="form-control attio-input" id="editSubjectCode" value="${subject.code}" required>
                 </div>
             </div>
             
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="editSubjectGrade" class="form-label">Grade Level</label>
-                    <select class="form-select" id="editSubjectGrade">
+                    <label for="editSubjectGrade" class="form-label attio-label">Grade Level</label>
+                    <select class="form-select attio-input" id="editSubjectGrade">
                         <option value="">All Grades</option>
                         <option value="7" ${subject.grade_level === '7' ? 'selected' : ''}>Grade 7</option>
                         <option value="8" ${subject.grade_level === '8' ? 'selected' : ''}>Grade 8</option>
@@ -564,20 +743,21 @@ function editSubject(subjectId) {
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="editSubjectCredits" class="form-label">Credits</label>
-                    <input type="number" class="form-control" id="editSubjectCredits" value="${subject.credits}" min="1" max="10">
+                    <label for="editSubjectCredits" class="form-label attio-label">Credits</label>
+                    <input type="number" class="form-control attio-input" id="editSubjectCredits" value="${subject.credits}" min="1" max="10">
                 </div>
             </div>
             
             <div class="mb-3">
-                <label for="editSubjectDescription" class="form-label">Description</label>
-                <textarea class="form-control" id="editSubjectDescription" rows="3">${subject.description}</textarea>
+                <label for="editSubjectDescription" class="form-label attio-label">Description</label>
+                <textarea class="form-control attio-input" id="editSubjectDescription" rows="3">${subject.description}</textarea>
             </div>
             
             <div class="d-flex justify-content-end gap-2">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-warning">
-                    <i class="fas fa-save me-2"></i>Update Subject
+                <button type="button" class="action-btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="action-btn-primary">
+                    <i class="fas fa-save"></i>
+                    <span>Update Subject</span>
                 </button>
             </div>
         </form>
@@ -648,9 +828,10 @@ function uploadSubjectFiles(subjectId) {
             <div id="selectedFiles" class="mt-3"></div>
             
             <div class="d-flex justify-content-end gap-2 mt-4">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-upload me-2"></i>Upload Files
+                <button type="button" class="action-btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="action-btn-primary">
+                    <i class="fas fa-upload"></i>
+                    <span>Upload Files</span>
                 </button>
             </div>
         </form>

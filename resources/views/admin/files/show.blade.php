@@ -359,7 +359,7 @@
 
 <!-- File Status Update Modal -->
 <div class="modal fade" id="fileStatusModal" tabindex="-1" aria-labelledby="fileStatusModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="fileStatusModalLabel">Update File Status</h5>
@@ -392,7 +392,7 @@
 
 <!-- Student Status Update Modal -->
 <div class="modal fade" id="studentStatusModal" tabindex="-1" aria-labelledby="studentStatusModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="studentStatusModalLabel">Update Student Status</h5>
@@ -423,7 +423,7 @@
 
 <!-- Delete File Modal -->
 <div class="modal fade" id="deleteFileModal" tabindex="-1" aria-labelledby="deleteFileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteFileModalLabel">Confirm Delete</h5>
@@ -441,6 +441,97 @@
 </div>
 @endsection
 
+@push('styles')
+<style>
+/* CRITICAL FIX: Ensure modals display above all content */
+/* Bootstrap 5.3.2 modal z-index fix */
+
+/* Reset any conflicting z-index from parent elements */
+.content {
+    position: relative;
+    z-index: auto !important;
+}
+
+/* Backdrop should be below modal */
+.modal-backdrop {
+    z-index: 1055 !important;
+    opacity: 0.5 !important;
+}
+
+/* Modal container */
+.modal {
+    z-index: 1056 !important;
+    display: none;
+}
+
+.modal.show {
+    display: block !important;
+}
+
+/* Modal dialog - ensure it's above backdrop */
+.modal-dialog {
+    position: relative;
+    z-index: 1;
+}
+
+/* Modal content - the actual white box */
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff !important;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+/* Ensure all interactive elements work */
+.modal-content * {
+    pointer-events: auto !important;
+}
+
+/* File status badges */
+.badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.file-card {
+    transition: all 0.3s ease;
+}
+
+.file-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Dark mode support */
+body.dark .modal-content {
+    background-color: #2d3748 !important;
+    color: #fff !important;
+    border-color: #4a5568;
+}
+
+body.dark .modal-header,
+body.dark .modal-body,
+body.dark .modal-footer {
+    background-color: #2d3748 !important;
+    color: #fff !important;
+    border-color: #4a5568 !important;
+}
+
+body.dark .form-control,
+body.dark .form-select {
+    background-color: #374151 !important;
+    color: #fff !important;
+    border-color: #4b5563 !important;
+}
+</style>
+@endpush
+
 @push('scripts')
 <script>
 let currentFileId = null;
@@ -452,20 +543,67 @@ let studentStatusModal = null;
 let deleteFileModal = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== Modal Initialization Debug ===');
+    
+    // Check if Bootstrap is loaded
+    if (typeof bootstrap === 'undefined') {
+        console.error('❌ Bootstrap 5 is NOT loaded!');
+        alert('ERROR: Bootstrap is not loaded. Please refresh the page.');
+        return;
+    }
+    console.log('✓ Bootstrap 5 loaded successfully');
+    
     // Initialize Bootstrap 5 modals
     const fileStatusModalElement = document.getElementById('fileStatusModal');
     const studentStatusModalElement = document.getElementById('studentStatusModal');
     const deleteFileModalElement = document.getElementById('deleteFileModal');
     
+    console.log('Modal elements found:', {
+        fileStatus: !!fileStatusModalElement,
+        studentStatus: !!studentStatusModalElement,
+        deleteFile: !!deleteFileModalElement
+    });
+    
     if (fileStatusModalElement) {
-        fileStatusModal = new bootstrap.Modal(fileStatusModalElement);
+        try {
+            fileStatusModal = new bootstrap.Modal(fileStatusModalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            console.log('✓ File Status Modal initialized');
+        } catch (error) {
+            console.error('❌ Error initializing File Status Modal:', error);
+        }
     }
+    
     if (studentStatusModalElement) {
-        studentStatusModal = new bootstrap.Modal(studentStatusModalElement);
+        try {
+            studentStatusModal = new bootstrap.Modal(studentStatusModalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            console.log('✓ Student Status Modal initialized');
+        } catch (error) {
+            console.error('❌ Error initializing Student Status Modal:', error);
+        }
     }
+    
     if (deleteFileModalElement) {
-        deleteFileModal = new bootstrap.Modal(deleteFileModalElement);
+        try {
+            deleteFileModal = new bootstrap.Modal(deleteFileModalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            console.log('✓ Delete File Modal initialized');
+        } catch (error) {
+            console.error('❌ Error initializing Delete File Modal:', error);
+        }
     }
+    
+    console.log('=== Modal Initialization Complete ===');
 });
 
 // Notification function for better user feedback
@@ -473,7 +611,8 @@ function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
-    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    // z-index: 1060 ensures notifications appear above modals (which use 1040-1052)
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 1060; min-width: 300px;';
     notification.innerHTML = `
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -490,11 +629,57 @@ function showNotification(message, type = 'info') {
 }
 
 function updateFileStatus(fileId, currentStatus) {
+    console.log('=== updateFileStatus called ===');
+    console.log('File ID:', fileId);
+    console.log('Current Status:', currentStatus);
+    
     currentFileId = fileId;
-    document.getElementById('fileStatusSelect').value = currentStatus;
-    document.getElementById('fileNotes').value = '';
+    const statusSelect = document.getElementById('fileStatusSelect');
+    const notesTextarea = document.getElementById('fileNotes');
+    
+    console.log('Form elements:', {
+        statusSelect: !!statusSelect,
+        notesTextarea: !!notesTextarea
+    });
+    
+    if (statusSelect) {
+        statusSelect.value = currentStatus || 'pending';
+        console.log('Status select value set to:', statusSelect.value);
+    }
+    if (notesTextarea) {
+        notesTextarea.value = '';
+    }
+    
     if (fileStatusModal) {
-        fileStatusModal.show();
+        console.log('Opening modal using initialized instance...');
+        try {
+            fileStatusModal.show();
+            console.log('✓ Modal.show() called successfully');
+        } catch (error) {
+            console.error('❌ Error calling modal.show():', error);
+        }
+    } else {
+        console.warn('⚠ Modal not initialized, trying fallback...');
+        // Fallback: try to show modal directly if initialization failed
+        const modalElement = document.getElementById('fileStatusModal');
+        if (modalElement) {
+            try {
+                const bsModal = new bootstrap.Modal(modalElement, {
+                    backdrop: true,
+                    keyboard: true,
+                    focus: true
+                });
+                fileStatusModal = bsModal; // Store for future use
+                bsModal.show();
+                console.log('✓ Fallback modal created and shown');
+            } catch (error) {
+                console.error('❌ Fallback failed:', error);
+                alert('Error: Could not open modal. Please check console for details.');
+            }
+        } else {
+            console.error('❌ Modal element not found in DOM');
+            alert('Error: Modal element not found');
+        }
     }
 }
 
@@ -544,9 +729,26 @@ function confirmFileStatusUpdate() {
 
 function updateStudentStatus(studentId, currentStatus) {
     currentStudentId = studentId;
-    document.getElementById('studentStatusSelect').value = currentStatus;
+    const statusSelect = document.getElementById('studentStatusSelect');
+    
+    if (statusSelect) {
+        statusSelect.value = currentStatus;
+    }
+    
     if (studentStatusModal) {
         studentStatusModal.show();
+    } else {
+        // Fallback: try to show modal directly if initialization failed
+        const modalElement = document.getElementById('studentStatusModal');
+        if (modalElement) {
+            const bsModal = new bootstrap.Modal(modalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            studentStatusModal = bsModal; // Store for future use
+            bsModal.show();
+        }
     }
 }
 
@@ -581,8 +783,21 @@ function confirmStudentStatusUpdate() {
 
 function deleteFile(fileId) {
     currentFileId = fileId;
+    
     if (deleteFileModal) {
         deleteFileModal.show();
+    } else {
+        // Fallback: try to show modal directly if initialization failed
+        const modalElement = document.getElementById('deleteFileModal');
+        if (modalElement) {
+            const bsModal = new bootstrap.Modal(modalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            deleteFileModal = bsModal; // Store for future use
+            bsModal.show();
+        }
     }
 }
 

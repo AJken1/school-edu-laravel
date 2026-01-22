@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">
                                 Total Students
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['studentCount'] }}</div>
@@ -43,7 +43,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">
                                 Total Teachers
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['teacherCount'] }}</div>
@@ -62,7 +62,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">
                                 Total Subjects
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['subjectCount'] }}</div>
@@ -81,7 +81,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">
                                 Total Users
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['totalUsers'] }}</div>

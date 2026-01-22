@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Students</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Total Students</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_students'] }}</div>
                         </div>
                         <div class="col-auto">
@@ -39,7 +39,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Students</div>
+                                <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Active Students</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['active_students'] }}</div>
                         </div>
                         <div class="col-auto">
@@ -54,7 +54,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Graduated</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Graduated</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['graduated_students'] }}</div>
                         </div>
                         <div class="col-auto">
@@ -69,7 +69,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Files</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Pending Files</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['pending_files'] }}</div>
                         </div>
                         <div class="col-auto">
@@ -84,7 +84,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved Files</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Approved Files</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['approved_files'] }}</div>
                         </div>
                         <div class="col-auto">
@@ -99,7 +99,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Missing Files</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Missing Files</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['missing_files'] }}</div>
                         </div>
                         <div class="col-auto">

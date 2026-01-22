@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Teachers</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Total Teachers</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $teachers->total() }}</div>
                         </div>
                         <div class="col-auto">
@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Active Teachers</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Active Teachers</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $teachers->where('status', 'Active')->count() }}</div>
                         </div>
                         <div class="col-auto">
@@ -52,7 +52,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Departments</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">Departments</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $teachers->pluck('department')->unique()->filter()->count() }}</div>
                         </div>
                         <div class="col-auto">
@@ -67,7 +67,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">New This Month</div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: rgba(0, 0, 0, 1);">New This Month</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $teachers->where('created_at', '>=', now()->startOfMonth())->count() }}</div>
                         </div>
                         <div class="col-auto">

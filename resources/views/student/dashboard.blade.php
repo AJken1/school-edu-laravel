@@ -3,158 +3,130 @@
 @section('title', 'Student Dashboard - EDUgate')
 
 @section('content')
-<div class="container">
+<div class="container-fluid px-4 attio-dashboard">
     <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="page-header mb-5">
         <div>
-            <h1 class="h3 mb-0 text-gray-800">
-                <i class="fas fa-tachometer-alt me-2"></i>My Dashboard
-            </h1>
-            <p class="text-muted mb-0">Welcome back, {{ $studentData['user']->name ?? 'Student' }}!</p>
-        </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-info" onclick="viewMyProfile()">
-                <i class="fas fa-user me-2"></i>My Profile
-            </button>
-            <button class="btn btn-success" onclick="checkMyStatus()">
-                <i class="fas fa-user-check me-2"></i>My Status
-            </button>
-            <a class="btn btn-warning" href="{{ route('student.enrollment.edit') }}">
-                <i class="fas fa-user-edit me-2"></i>Edit Enrollment Info
-            </a>
-            <a class="btn btn-primary" href="{{ route('student.files.index') }}">
-                <i class="fas fa-file-alt me-2"></i>My Documents
-            </a>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Welcome back, {{ $studentData['user']->name ?? 'Student' }}</p>
         </div>
     </div>
 
-    <!-- Student Info Cards -->
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">My Grade</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $studentData['grade'] ? 'Grade ' . $studentData['grade'] : 'Not Assigned' }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-layer-group fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+    <!-- Quick Actions -->
+    <div class="quick-actions mb-5">
+        <button class="action-btn-primary" onclick="viewMyProfile()">
+            <i class="fas fa-user"></i>
+            <span>My Profile</span>
+        </button>
+        <button class="action-btn-primary" onclick="checkMyStatus()">
+            <i class="fas fa-user-check"></i>
+            <span>My Status</span>
+        </button>
+        <a class="action-btn-primary" href="{{ route('student.enrollment.edit') }}">
+            <i class="fas fa-user-edit"></i>
+            <span>Edit Enrollment Info</span>
+        </a>
+        <a class="action-btn-primary" href="{{ route('student.files.index') }}">
+            <i class="fas fa-file-alt"></i>
+            <span>My Documents</span>
+        </a>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid mb-5">
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">My Grade</div>
+                <div class="stat-value">{{ $studentData['grade'] ? 'Grade ' . $studentData['grade'] : 'Not Assigned' }}</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-layer-group"></i>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Status</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ ucfirst($studentData['status']) }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            @if($studentData['status'] == 'Active')
-                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                            @elseif($studentData['status'] == 'pending')
-                                <i class="fas fa-clock fa-2x text-gray-300"></i>
-                            @else
-                            <i class="fas fa-user-check fa-2x text-gray-300"></i>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">Status</div>
+                <div class="stat-value">{{ ucfirst($studentData['status']) }}</div>
+            </div>
+            <div class="stat-icon">
+                @if($studentData['status'] == 'Active')
+                    <i class="fas fa-check-circle"></i>
+                @elseif($studentData['status'] == 'pending')
+                    <i class="fas fa-clock"></i>
+                @else
+                    <i class="fas fa-user-check"></i>
+                @endif
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">My Documents</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ is_countable($documents) ? count($documents) : 0 }} Files
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card" onclick="window.location.href='{{ route('student.files.index') }}'">
+            <div class="stat-content">
+                <div class="stat-label">My Documents</div>
+                <div class="stat-value">{{ is_countable($documents) ? count($documents) : 0 }}</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-file-alt"></i>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 mb-3">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Classmates</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ is_countable($classmates) ? count($classmates) : 0 }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-content">
+                <div class="stat-label">Classmates</div>
+                <div class="stat-value">{{ is_countable($classmates) ? count($classmates) : 0 }}</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
             </div>
         </div>
     </div>
 
-    <!-- Personal Information & Documents -->
-    <div class="row mb-4">
+    <!-- Content Grid -->
+    <div class="content-grid mb-5">
         @if($studentData['student'])
-        <div class="col-lg-8">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-user me-2"></i>My Information
-                    </h6>
+        <div class="info-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">My Information</h3>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong><i class="fas fa-user me-2"></i>Full Name:</strong> 
-                                {{ $studentData['student']->first_name ?? $studentData['student']->firstname }} 
-                                {{ $studentData['student']->last_name ?? $studentData['student']->lastname }}
-                            </p>
-                            <p><strong><i class="fas fa-envelope me-2"></i>Email:</strong> 
-                                {{ $studentData['user']->email }}
-                            </p>
-                            <p><strong><i class="fas fa-phone me-2"></i>Contact:</strong> 
-                                {{ $studentData['student']->contact_number ?? 'Not provided' }}
-                            </p>
+                <div class="section-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value">{{ $studentData['student']->first_name ?? $studentData['student']->firstname }} {{ $studentData['student']->last_name ?? $studentData['student']->lastname }}</div>
                         </div>
-                        <div class="col-md-6">
-                            <p><strong><i class="fas fa-id-card me-2"></i>Student ID:</strong> 
-                                {{ $studentData['student']->id ?? 'Not assigned' }}
-                            </p>
-                            <p><strong><i class="fas fa-calendar me-2"></i>Enrollment Date:</strong> 
-                                {{ $studentData['enrollment_date'] ? $studentData['enrollment_date']->format('M d, Y') : 'Unknown' }}
-                            </p>
-                            <p><strong><i class="fas fa-home me-2"></i>Address:</strong> 
-                                {{ $studentData['student']->current_address ?? $studentData['student']->address ?? 'Not provided' }}
-                            </p>
+                        <div class="info-item">
+                            <div class="info-label">Email</div>
+                            <div class="info-value">{{ $studentData['user']->email }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Contact</div>
+                            <div class="info-value">{{ $studentData['student']->contact_number ?? 'Not provided' }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Student ID</div>
+                            <div class="info-value">{{ $studentData['student']->id ?? 'Not assigned' }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Enrollment Date</div>
+                            <div class="info-value">{{ $studentData['enrollment_date'] ? $studentData['enrollment_date']->format('M d, Y') : 'Unknown' }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Address</div>
+                            <div class="info-value">{{ $studentData['student']->current_address ?? $studentData['student']->address ?? 'Not provided' }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         @else
-        <div class="col-lg-12">
-            <div class="card shadow mb-4">
-                <div class="card-body text-center py-5">
-                    <div class="text-muted">
-                        <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
-                        <h5>No Student Record Found</h5>
+        <div class="info-section">
+            <div class="section-card">
+                <div class="section-body text-center py-5">
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>No Student Record Found</h3>
                         <p>Your account doesn't have a student record associated with it yet. Please contact the administrator to set up your student profile.</p>
-                        <a href="{{ route('profile.show') }}" class="btn btn-primary">
-                            <i class="fas fa-user me-2"></i>View Profile
+                        <a href="{{ route('profile.show') }}" class="action-btn-primary">
+                            <i class="fas fa-user"></i>
+                            <span>View Profile</span>
                         </a>
                     </div>
                 </div>
@@ -163,30 +135,32 @@
         @endif
         
         @if($studentData['student'])
-        <div class="col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-success">
-                        <i class="fas fa-file-alt me-2"></i>My Documents
-                    </h6>
+        <div class="files-section">
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Documents</h3>
                 </div>
-                <div class="card-body">
+                <div class="section-body">
                     @if(is_countable($documents) && count($documents) > 0)
-                        @foreach($documents as $document)
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-file fa-lg text-primary me-2"></i>
-                            <div class="flex-grow-1">
-                                <small class="d-block">{{ $document->file_name }}</small>
-                                <small class="text-muted">{{ $document->created_at->format('M d, Y') }}</small>
+                        <div class="files-list">
+                            @foreach($documents as $document)
+                            <div class="file-item">
+                                <div class="file-icon">
+                                    <i class="fas fa-file"></i>
+                                </div>
+                                <div class="file-details">
+                                    <div class="file-name">{{ $document->file_name }}</div>
+                                    <div class="file-student">{{ $document->created_at->format('M d, Y') }}</div>
+                                </div>
+                                <div class="file-status">
+                                    <span class="status-badge status-{{ $document->status }}">{{ ucfirst($document->status) }}</span>
+                                </div>
                             </div>
-                            <span class="badge badge-{{ $document->status == 'approved' ? 'success' : ($document->status == 'rejected' ? 'danger' : 'warning') }}">
-                                {{ ucfirst($document->status) }}
-                            </span>
+                            @endforeach
                         </div>
-                        @endforeach
                     @else
-                        <div class="text-center text-muted">
-                            <i class="fas fa-folder-open fa-2x mb-2"></i>
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
                             <p>No documents uploaded yet</p>
                         </div>
                     @endif
@@ -196,52 +170,51 @@
         @endif
     </div>
 
-    <!-- My Classmates -->
+    <!-- Classmates Section -->
     @if(is_countable($classmates) && count($classmates) > 0)
-    <div class="card shadow">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">
-                <i class="fas fa-users me-2"></i>My Classmates
+    <div class="students-section">
+        <div class="section-card">
+            <div class="section-header">
+                <div>
+                    <h3 class="section-title">My Classmates</h3>
+                    <span class="section-count">{{ is_countable($classmates) ? count($classmates) : 0 }} classmates</span>
+                </div>
                 @if($studentData['grade'])
-                    <span class="badge badge-info ms-2">Grade {{ $studentData['grade'] }}</span>
+                    <span class="status-badge">Grade {{ $studentData['grade'] }}</span>
                 @endif
-            </h6>
-            <div>
-                <span class="badge badge-secondary">{{ is_countable($classmates) ? count($classmates) : 0 }} classmates</span>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                @foreach($classmates as $classmate)
-                <div class="col-md-6 col-lg-4 mb-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 50px; height: 50px;">
-                                {{ strtoupper(substr($classmate->first_name ?? $classmate->firstname ?? 'S', 0, 1)) }}
-                            </div>
-                            <h6 class="card-title mb-1">
+            <div class="section-body">
+                <div class="students-grid">
+                    @foreach($classmates as $classmate)
+                    <div class="student-card">
+                        <div class="student-avatar">
+                            {{ strtoupper(substr($classmate->first_name ?? $classmate->firstname ?? 'S', 0, 1)) }}
+                        </div>
+                        <div class="student-info">
+                            <div class="student-name">
                                 {{ $classmate->first_name ?? $classmate->firstname }} 
                                 {{ $classmate->last_name ?? $classmate->lastname }}
-                            </h6>   
-                            @if($classmate->user && $classmate->user->email)
-                            <div class="mt-2">
-                                <small class="text-muted">{{ $classmate->user->email }}</small>
                             </div>
+                            <div class="student-id">ID: {{ $classmate->id }}</div>
+                            @if($classmate->user && $classmate->user->email)
+                            <div class="student-email">{{ $classmate->user->email }}</div>
                             @endif
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </div>
     </div>
     @else
-    <div class="card shadow">
-        <div class="card-body text-center py-5">
-            <div class="text-muted">
-                <i class="fas fa-users fa-3x mb-3"></i>
-                <h5>No Classmates Found</h5>
-                <p>You don't have any classmates in your grade level yet.</p>
+    <div class="students-section">
+        <div class="section-card">
+            <div class="section-body text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>No Classmates Found</h3>
+                    <p>You don't have any classmates in your grade level yet.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -250,36 +223,16 @@
 
 <!-- Student Status Modal -->
 <div class="modal fade" id="statusModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content attio-modal">
             <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="fas fa-info-circle me-2"></i>Student Status Details
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">My Academic Status</h5>
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="statusModalBody">
                 <!-- Status details will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- My Status Modal -->
-<div class="modal fade" id="myStatusModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-user-check me-2"></i>My Academic Status
-                </h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="myStatusModalBody">
-                <!-- My status details will be loaded here -->
             </div>
         </div>
     </div>
@@ -288,110 +241,460 @@
 
 @push('styles')
 <style>
-/* Clean, modern dashboard styling */
-.card {
-    border: none;
+/* Attio-inspired Minimalist Design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.attio-dashboard {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+/* Typography */
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    font-size: 0.9375rem;
+    color: #666;
+    margin: 0.5rem 0 0;
+    font-weight: 400;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.page-header {
+    margin-bottom: 2.5rem;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+}
+
+.action-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.125rem;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    color: #1a1a1a;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.action-btn-primary:hover {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+    color: #1a1a1a;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.action-btn-primary i {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.card:hover {
+.stat-card:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
-.card-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom: 1px solid #dee2e6;
-    border-radius: 12px 12px 0 0 !important;
-    font-weight: 600;
-}
-
-.border-left-primary {
-    border-left: 4px solid #4e73df !important;
-}
-
-.border-left-success {
-    border-left: 4px solid #1cc88a !important;
-}
-
-.border-left-warning {
-    border-left: 4px solid #f6c23e !important;
-}
-
-.border-left-info {
-    border-left: 4px solid #36b9cc !important;
-}
-
-.text-xs {
-    font-size: 0.75rem;
-    font-weight: 600;
+.stat-label {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.h5 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #2d3748;
+.stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+    letter-spacing: -0.02em;
 }
 
-.text-gray-300 {
-    color: #a0aec0 !important;
-}
-
-.text-gray-800 {
-    color: #2d3748 !important;
-}
-
-.text-muted {
-    color: #718096 !important;
-}
-
-/* Compact spacing */
-.mb-4 {
-    margin-bottom: 1.5rem !important;
-}
-
-.py-2 {
-    padding-top: 0.75rem !important;
-    padding-bottom: 0.75rem !important;
-}
-
-/* Button styling */
-.btn {
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
     border-radius: 8px;
+    color: #666;
+    font-size: 1.25rem;
+}
+
+.stat-card:hover .stat-icon {
+    background: #eaeaea;
+    color: #1a1a1a;
+}
+
+/* Section Cards */
+.section-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-count {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 400;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.section-body {
+    padding: 1.5rem;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (max-width: 992px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.info-label {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 0.9375rem;
+    color: #1a1a1a;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
 }
 
-.btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Files List */
+.files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-/* Badge styling */
-.badge {
-    font-size: 0.7rem;
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.file-item:hover {
+    background: #fafafa;
+}
+
+.file-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 6px;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.file-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-name {
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-student {
+    font-size: 0.8125rem;
+    color: #666;
+}
+
+.file-status {
+    flex-shrink: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-approved {
+    background: #f0f0f0;
+    color: #1a1a1a;
+}
+
+.status-pending {
+    background: #faf5e6;
+    color: #8b6914;
+}
+
+.status-rejected {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.status-missing {
+    background: #faf5e6;
+    color: #8b6914;
+}
+
+/* Students Grid */
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.student-card {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.student-card:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transform: translateY(-2px);
+}
+
+.student-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
+    font-size: 1.125rem;
+    margin: 0 auto 1rem;
 }
 
-/* Icon styling */
-.fas, .far, .fab {
+.student-name {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.375rem;
+}
+
+.student-id {
+    font-size: 0.8125rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.student-email {
+    font-size: 0.8125rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.empty-state h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal */
+.attio-modal .modal-content {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+.attio-modal .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    background: #ffffff;
+}
+
+.attio-modal .modal-title {
+    font-size: 1.25rem;
     font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
 }
 
-/* Responsive adjustments */
+.modal-close {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.125rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f5f5;
+    color: #1a1a1a;
+}
+
+.attio-modal .modal-body {
+    padding: 1.5rem;
+}
+
+/* Students Section */
+.students-section {
+    margin-bottom: 2.5rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .h5 {
-        font-size: 1.25rem;
+    .attio-dashboard {
+        padding: 1rem 0;
     }
     
-    .card-body {
-        padding: 1rem;
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .quick-actions {
+        gap: 0.5rem;
+    }
+    
+    .action-btn-primary {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8125rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-grid {
+        gap: 1rem;
+    }
+    
+    .students-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -400,8 +703,7 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-load directory stats and list for old UI
-    loadStudents();
+    // Auto-load any necessary data
 });
 
 function viewMyProfile() {
@@ -409,10 +711,10 @@ function viewMyProfile() {
 }
 
 function checkMyStatus() {
-    const modal = new bootstrap.Modal(document.getElementById('myStatusModal'));
-    document.getElementById('myStatusModalBody').innerHTML = `
+    const modal = new bootstrap.Modal(document.getElementById('statusModal'));
+    document.getElementById('statusModalBody').innerHTML = `
         <div class="text-center py-3">
-            <div class="spinner-border text-primary" role="status"></div>
+            <div class="spinner-border text-dark" role="status"></div>
             <p class="mt-2">Loading your academic status...</p>
         </div>
     `;
@@ -420,62 +722,50 @@ function checkMyStatus() {
     
     // Simulate loading personal status
     setTimeout(() => {
-        document.getElementById('myStatusModalBody').innerHTML = `
-            <div class="row">
-                <div class="col-md-12 mb-4">
-                    <div class="alert alert-success">
-                        <h5><i class="fas fa-check-circle me-2"></i>Academic Standing: Good</h5>
-                        <p class="mb-0">You are in good academic standing with no pending requirements.</p>
+        document.getElementById('statusModalBody').innerHTML = `
+            <div style="display: grid; gap: 1.5rem;">
+                <div style="background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-check-circle" style="color: #1a1a1a;"></i>
+                        <h5 style="margin: 0; font-size: 1rem; font-weight: 600; color: #1a1a1a;">Academic Standing: Good</h5>
                     </div>
+                    <p style="margin: 0; font-size: 0.875rem; color: #666;">You are in good academic standing with no pending requirements.</p>
                 </div>
                 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h6 class="mb-0">Current Enrollment</h6>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Grade:</strong> {{ auth()->user()->student->grade ?? '11' }}</p>
-                            <p><strong>Section:</strong> Diamond</p>
-                            <p><strong>School Year:</strong> 2024-2025</p>
-                            <p><strong>Status:</strong> <span class="badge badge-success">Active</span></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header bg-success text-white">
-                            <h6 class="mb-0">Document Status</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>Enrollment Form
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 1rem;">
+                        <h6 style="margin: 0 0 1rem; font-size: 0.875rem; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px;">Current Enrollment</h6>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div>
+                                <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">Grade</div>
+                                <div style="font-size: 0.875rem; color: #1a1a1a; font-weight: 500;">{{ $studentData['grade'] ? 'Grade ' . $studentData['grade'] : 'Not Assigned' }}</div>
                             </div>
-                            <div class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>Birth Certificate
+                            <div>
+                                <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">Status</div>
+                                <span style="display: inline-block; padding: 0.25rem 0.625rem; background: #f0f0f0; color: #1a1a1a; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">{{ ucfirst($studentData['status']) }}</span>
                             </div>
-                            <div class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>Report Card
-                            </div>
-                            <div class="mb-2">
-                                <i class="fas fa-exclamation-triangle text-warning me-2"></i>Medical Certificate (Pending)
+                            <div>
+                                <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">Enrollment Date</div>
+                                <div style="font-size: 0.875rem; color: #1a1a1a; font-weight: 500;">{{ $studentData['enrollment_date'] ? $studentData['enrollment_date']->format('M d, Y') : 'Unknown' }}</div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-md-12 mt-3">
-                    <div class="card">
-                        <div class="card-header bg-info text-white">
-                            <h6 class="mb-0">Next Steps</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2"><i class="fas fa-clock text-warning me-2"></i>Submit Medical Certificate by March 15, 2024</li>
-                                <li class="mb-2"><i class="fas fa-info-circle text-info me-2"></i>Attend orientation on March 20, 2024</li>
-                                <li><i class="fas fa-calendar text-primary me-2"></i>Classes begin March 25, 2024</li>
-                            </ul>
+                    
+                    <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 1rem;">
+                        <h6 style="margin: 0 0 1rem; font-size: 0.875rem; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px;">Document Status</h6>
+                        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #1a1a1a;">
+                                <i class="fas fa-check" style="color: #1a1a1a;"></i>
+                                <span>Enrollment Form</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #1a1a1a;">
+                                <i class="fas fa-check" style="color: #1a1a1a;"></i>
+                                <span>Birth Certificate</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #1a1a1a;">
+                                <i class="fas fa-check" style="color: #1a1a1a;"></i>
+                                <span>Report Card</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -483,59 +773,5 @@ function checkMyStatus() {
         `;
     }, 1000);
 }
-
-// Old UI loader compatible: fetch from student route returning JSON
-async function loadStudents(page = 1) {
-    try {
-        const url = new URL('{{ route('student.students.index') }}', window.location.origin);
-        url.searchParams.set('page', page);
-        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-        const data = await res.json();
-        if (!data.success) throw new Error('Failed to load');
-        // Update stat cards if present
-        const total = document.getElementById('totalStudents');
-        const active = document.getElementById('activeStudents');
-        const pending = document.getElementById('pendingDocs');
-        const graduated = document.getElementById('graduatedStudents');
-        if (total) total.textContent = data.stats?.total ?? 0;
-        if (active) active.textContent = data.stats?.active ?? 0;
-        if (pending) pending.textContent = data.stats?.pending ?? 0;
-        if (graduated) graduated.textContent = data.stats?.graduated ?? 0;
-        // If old table exists, fill it
-        const tbody = document.getElementById('studentsTableBody');
-        if (tbody) {
-            tbody.innerHTML = (data.students || []).map((s, idx) => `
-                <tr>
-                    <td class="text-center">${idx + 1}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                    ${(s.first_name || s.firstname || 'S').charAt(0).toUpperCase()}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="fw-bold">${(s.first_name || s.firstname || '')} ${(s.last_name || s.lastname || '')}</div>
-                                <small class="text-muted">Student ID: ${s.id}</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-secondary">${s.grade_level ? `Grade ${s.grade_level}` : (s.grade || 'Not Set')}</span></td>
-                    <td><span class="badge bg-info">${s.status || ''}</span></td>
-                    <td><small>${s.created_at ? new Date(s.created_at).toLocaleDateString() : ''}</small></td>
-                    <td><small>${s.email || s.user?.email || ''}<br>${s.contact_number || ''}</small></td>
-                    <td></td>
-                </tr>
-            `).join('');
-            const info = document.getElementById('paginationInfo');
-            if (info && data.pagination) {
-                info.textContent = `Showing ${data.pagination.from || 0} to ${data.pagination.to || 0} of ${data.pagination.total || 0} students`;
-            }
-        }
-    } catch (e) {
-        console.error(e);
-    }
-}
 </script>
 @endpush
-

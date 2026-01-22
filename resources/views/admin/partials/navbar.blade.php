@@ -1,20 +1,11 @@
 <!-- Navbar -->
 <nav class="navbar">
   <div class="navbar-content">
-    <form action="#" method="GET" class="search-form">
-        <div class="form-input">
-            <input type="search" name="search" placeholder="Search...">
-            <button type="submit" class="search-btn">
-                <i class='bx bx-search'></i>
-            </button>
-        </div>
-    </form>
-    
     <div class="navbar-right">
         <!-- Profile Dropdown -->
         <div class="profile-dropdown">
             <div class="profile-trigger" onclick="toggleProfileDropdown()">
-                <img src="{{ auth()->user()->admin?->profile_image ?? asset('images/user.png') }}" alt="Profile" class="profile-img">
+                <img src="{{ auth()->user()->admin?->profile_image ?? asset('images/admin1.png') }}" alt="Profile" class="profile-img">
                 <span class="profile-name">{{ auth()->user()->name }}</span>
                 <i class='bx bx-chevron-down'></i>
             </div>
@@ -62,26 +53,36 @@
 
 <!-- Profile Dropdown Styles -->
 <style>
-.navbar {
+.content nav.navbar {
+    height: 60px;
     background: #fff;
     padding: 0 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.navbar {
+    width: 100%;
 }
 
 .navbar-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 12px;
     height: 60px;
+    width: 100%;
 }
 
 .navbar-right {
     display: flex;
     align-items: center;
     gap: 20px;
+    margin-left: auto;
 }
 
 

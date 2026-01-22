@@ -77,15 +77,19 @@
 
         // Auto-hide alerts after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                setTimeout(function() {
-                    alert.style.opacity = '0';
+            const alerts = document.querySelectorAll('.alert:not(.alert-dismissible)');
+            if (alerts && alerts.length > 0) {
+                alerts.forEach(function(alert) {
                     setTimeout(function() {
-                        alert.remove();
-                    }, 300);
-                }, 5000);
-            });
+                        alert.style.opacity = '0';
+                        setTimeout(function() {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 300);
+                    }, 5000);
+                });
+            }
         });
 
     </script>
