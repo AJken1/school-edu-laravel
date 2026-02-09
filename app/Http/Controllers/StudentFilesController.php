@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudentFile;
+use App\Http\Requests\StudentFileRequest;
+use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 
-class StudentFilesController extends Controller
+class StudentFilesController extends BaseFileController
 {
+    protected $fileService;
+    
+    public function __construct(FileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
+    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -25,7 +33,7 @@ class StudentFilesController extends Controller
         return view('student.files', compact('student', 'requiredFiles', 'existingFiles'));
     }
 
-    public function store(Request $request)
+    public function store(StudentFileRequest $request)
     {
         $user = $request->user();
         $student = $user->student;
@@ -33,64 +41,49 @@ class StudentFilesController extends Controller
             return back()->with('error', 'No student record found.');
         }
 
-        $validated = $request->validate([
-            'file_type' => 'required|string|in:' . implode(',', array_keys(StudentFile::REQUIRED_FILE_TYPES)),
-            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-        ]);
-
+        $validated = $request->validated();
         $uploaded = $validated['file'];
-        $path = $uploaded->store("student_files/{$student->id}");
-
+        
+        // Use FileService for file validation
+        $validation = $this->fileService->validateFileContent($uploaded);
+        if ($validation !== true) {
+            return back()->with('error', $validation['error']);
+        }
+        
         // If replacing existing, delete old
         $existing = $student->files()->where('file_type', $validated['file_type'])->first();
         if ($existing) {
-            if (Storage::exists($existing->file_path)) {
-                Storage::delete($existing->file_path);
-            }
-            $existing->delete();
+            $this->fileService->deleteStudentFile($existing);
         }
 
-        $file = $student->files()->create([
-            'file_type' => $validated['file_type'],
-            'file_name' => $uploaded->getClientOriginalName(),
-            'file_path' => $path,
-            'file_size' => (string) $uploaded->getSize(),
-            'mime_type' => $uploaded->getMimeType(),
-            'status' => 'pending',
-            'uploaded_at' => now(),
-        ]);
+        // Use FileService to store the file
+        $file = $this->fileService->storeStudentFile(
+            $uploaded, 
+            $student->id, 
+            $validated['file_type']
+        );
 
         return back()->with('success', 'File uploaded successfully. It is now pending review.');
     }
 
-    public function update(Request $request, StudentFile $file)
+    public function update(StudentFileRequest $request, StudentFile $file)
     {
         $user = $request->user();
         if ($file->student_id !== ($user->student->id ?? null)) {
             abort(403);
         }
 
-        $validated = $request->validate([
-            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-        ]);
-
-        // Replace file
-        if (Storage::exists($file->file_path)) {
-            Storage::delete($file->file_path);
-        }
+        $validated = $request->validated();
         $uploaded = $validated['file'];
-        $path = $uploaded->store("student_files/{$file->student_id}");
-
-        $file->update([
-            'file_name' => $uploaded->getClientOriginalName(),
-            'file_path' => $path,
-            'file_size' => (string) $uploaded->getSize(),
-            'mime_type' => $uploaded->getMimeType(),
-            'status' => 'pending', // re-review after replace
-            'uploaded_at' => now(),
-            'reviewed_at' => null,
-            'reviewed_by' => null,
-        ]);
+        
+        // Use FileService for file validation
+        $validation = $this->fileService->validateFileContent($uploaded);
+        if ($validation !== true) {
+            return back()->with('error', $validation['error']);
+        }
+        
+        // Use FileService to update the file
+        $this->fileService->updateStudentFile($file, $uploaded);
 
         return back()->with('success', 'File replaced successfully and is pending review.');
     }
@@ -101,10 +94,10 @@ class StudentFilesController extends Controller
         if ($file->student_id !== ($user->student->id ?? null)) {
             abort(403);
         }
-        if (Storage::exists($file->file_path)) {
-            Storage::delete($file->file_path);
-        }
-        $file->delete();
+        
+        // Use FileService for file deletion
+        $this->fileService->deleteStudentFile($file);
+        
         return back()->with('success', 'File deleted successfully.');
     }
 
@@ -114,13 +107,16 @@ class StudentFilesController extends Controller
         if ($file->student_id !== ($user->student->id ?? null)) {
             abort(403);
         }
-        if (!Storage::exists($file->file_path)) {
+        
+        // Get file content using FileService
+        $fileData = $this->fileService->getFileContent($file->file_path);
+        
+        if (!$fileData) {
             abort(404, 'File not found.');
         }
-        $fileContent = Storage::get($file->file_path);
-        $mimeType = $file->mime_type ?: Storage::mimeType($file->file_path);
-        return Response::make($fileContent, 200, [
-            'Content-Type' => $mimeType,
+        
+        return response($fileData['content'], 200, [
+            'Content-Type' => $fileData['mime_type'],
             'Content-Disposition' => 'inline; filename="' . $file->file_name . '"'
         ]);
     }
