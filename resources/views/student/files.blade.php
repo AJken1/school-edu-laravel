@@ -189,9 +189,7 @@
 .action-btn-secondary:hover {
     background: #f5f5f5;
     border-color: #d0d0d0;
-}
-
-.action-btn-secondary.btn-sm {
+}.action-btn-secondary.btn-sm {
     padding: 0.375rem 0.75rem;
     font-size: 0.75rem;
 }

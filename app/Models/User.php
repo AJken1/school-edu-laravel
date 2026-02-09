@@ -80,4 +80,26 @@ class User extends Authenticatable implements MustVerifyEmailContract
             default => null,
         };
     }
+
+    /**
+     * Get 2-letter initials from the user's name (first letter of first two words, or first two chars).
+     * Used for avatar fallback when no profile image is set.
+     */
+    public function getInitialsAttribute(): string
+    {
+        $name = $this->name ? trim($this->name) : '';
+
+        if ($name === '') {
+            return $this->role === 'admin' ? 'SA' : strtoupper(substr($this->role ?: 'U', 0, 1));
+        }
+
+        $words = preg_split('/\s+/', $name, 2);
+
+        if (count($words) >= 2) {
+            return strtoupper(mb_substr($words[0], 0, 1) . mb_substr($words[1], 0, 1));
+        }
+
+        $first = mb_substr($name, 0, 2);
+        return mb_strlen($first) >= 2 ? strtoupper($first) : strtoupper($first);
+    }
 }

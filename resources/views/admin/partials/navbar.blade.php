@@ -3,17 +3,31 @@
   <div class="navbar-content">
     <div class="navbar-right">
         <!-- Profile Dropdown -->
+        @php
+            $user = auth()->user();
+            $admin = $user->admin;
+            $hasProfileImage = $admin && $admin->image;
+            $initials = $user->initials;
+        @endphp
         <div class="profile-dropdown">
             <div class="profile-trigger" onclick="toggleProfileDropdown()">
-                <img src="{{ auth()->user()->admin?->profile_image ?? asset('images/admin1.png') }}" alt="Profile" class="profile-img">
-                <span class="profile-name">{{ auth()->user()->name }}</span>
+                @if($hasProfileImage)
+                    <img src="{{ asset('storage/admins/' . $admin->image) }}" alt="{{ $user->name }}" class="profile-img">
+                @else
+                    <div class="avatar-initials avatar-initials--sm" aria-hidden="true">{{ $initials }}</div>
+                @endif
+                <span class="profile-name">{{ $user->name }}</span>
                 <i class='bx bx-chevron-down'></i>
             </div>
             
             <!-- Dropdown Menu -->
             <div class="profile-menu" id="profileMenu">
                 <div class="profile-header">
-                    <img src="{{ auth()->user()->admin?->profile_image ?? asset('images/user.png') }}" alt="Profile">
+                    @if($hasProfileImage)
+                        <img src="{{ asset('storage/admins/' . $admin->image) }}" alt="{{ $user->name }}" class="profile-header-img">
+                    @else
+                        <div class="avatar-initials avatar-initials--md" aria-hidden="true">{{ $initials }}</div>
+                    @endif
                     <div class="profile-info">
                         <h4>{{ auth()->user()->name }}</h4>
                         <p>{{ ucfirst(auth()->user()->role) }}</p>
@@ -105,20 +119,74 @@
     background: #e9ecef;
 }
 
-.profile-img {
+.profile-img,
+.profile-header-img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
     object-fit: cover;
 }
 
+.profile-header .profile-header-img,
+.profile-header .avatar-initials--md {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.avatar-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    user-select: none;
+}
+
+.avatar-initials--sm {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 0.75rem;
+}
+
+.avatar-initials--md {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    font-size: 1rem;
+}
+
 .profile-name {
     font-weight: 500;
     color: #333;
-    max-width: 120px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+    .profile-trigger {
+        padding: 6px 10px;
+        gap: 8px;
+    }
+    .profile-name {
+        max-width: 80px;
+        font-size: 0.875rem;
+    }
+    .profile-menu {
+        width: min(280px, calc(100vw - 24px));
+        right: 0;
+        left: auto;
+    }
 }
 
 .profile-menu {
@@ -155,6 +223,7 @@
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
 }
 
 .profile-info h4 {

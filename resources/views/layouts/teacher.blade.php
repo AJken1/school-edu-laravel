@@ -194,8 +194,8 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; font-size: 14px; font-weight: bold;">
-                                {{ strtoupper(substr(auth()->user()->name ?: 'T', 0, 1)) }}
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 flex-shrink-0" style="width: 32px; height: 32px; font-size: 12px; font-weight: 600;">
+                                {{ auth()->user()->initials }}
                             </div>
                             {{ auth()->user()->name ?: 'Teacher' }}
                         </a>
@@ -203,8 +203,8 @@
                             <li>
                                 <h6 class="dropdown-header">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; font-size: 16px;">
-                                            {{ strtoupper(substr(auth()->user()->name ?: 'T', 0, 1)) }}
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 flex-shrink-0" style="width: 40px; height: 40px; font-size: 14px; font-weight: 600;">
+                                            {{ auth()->user()->initials }}
                                         </div>
                                         <div>
                                             <div class="fw-bold">{{ auth()->user()->name ?: 'Teacher' }}</div>
