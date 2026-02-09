@@ -15,21 +15,22 @@ class FilesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Student::with(['files', 'user']);
+        // Improve eager loading to prevent N+1 query problems
+        $query = Student::with(['files.reviewedBy', 'user']);
         
         // Filter by status if provided
         if ($request->has('status') && $request->status !== '') {
             $query->where('status', $request->status);
         }
         
-        // Search by student name or application ID
+        // Search by student name or application ID - using parameter binding to prevent SQL injection
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('firstname', 'like', "%{$search}%")
-                  ->orWhere('lastname', 'like', "%{$search}%")
-                  ->orWhere('application_id', 'like', "%{$search}%")
-                  ->orWhere('lrn_number', 'like', "%{$search}%");
+                $q->where('firstname', 'like', '%' . $search . '%')
+                  ->orWhere('lastname', 'like', '%' . $search . '%')
+                  ->orWhere('application_id', 'like', '%' . $search . '%')
+                  ->orWhere('lrn_number', 'like', '%' . $search . '%');
             });
         }
         
